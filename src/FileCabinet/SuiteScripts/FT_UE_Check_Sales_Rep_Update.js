@@ -1,0 +1,55 @@
+/**
+ * @NApiVersion 2.x
+ * @NScriptType UserEventScript
+ * @NModuleScope SameAccount
+ */
+define(['N/runtime'],
+
+    function (runtime) {
+
+        /**
+         * Function definition to be triggered before record is loaded.
+         *
+         * @param {Object} scriptContext
+         * @param {Record} scriptContext.newRecord - New record
+         * @param {Record} scriptContext.oldRecord - Old record
+         * @param {string} scriptContext.type - Trigger type
+         * @Since 2015.2
+         */
+        function beforeSubmit(scriptContext) {
+            try {
+                // if(scriptContext.type=='edit')
+                // {
+                var scriptObj = runtime.getCurrentScript();
+                var selfServ = scriptObj.getParameter({ name: 'custscript_ft_self_service_rep_id' })
+
+                var newRec = scriptContext.newRecord
+                var oldRec = scriptContext.oldRecord
+                var newSalesRep = newRec.getValue({
+                    fieldId: 'salesrep'
+                })
+                var oldSalesRep = oldRec.getValue({
+                    fieldId: 'salesrep'
+                })
+                log.debug("newSalesRep", newSalesRep)
+                log.debug("oldSalesRep", oldSalesRep)
+
+                if (newSalesRep != oldSalesRep && newSalesRep != selfServ) {
+                    log.debug("entry to condition", oldSalesRep)
+
+                    newRec.setValue({
+                        fieldId: 'custentity_ft_dunning_rep_dunning_rec_cr',
+                        value: true
+                    })
+                }
+                // }
+            } catch (e) {
+                log.audit("Error", e)
+            }
+        }
+
+        return {
+            beforeSubmit: beforeSubmit,
+        };
+
+    });
