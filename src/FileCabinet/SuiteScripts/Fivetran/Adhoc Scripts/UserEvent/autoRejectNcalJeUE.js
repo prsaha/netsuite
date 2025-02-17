@@ -13,11 +13,11 @@
  * with Fivetran.
  */
 
- /**
- *  Author: Vasu
- */
+/**
+*  Author: Vasu
+*/
 
-define(['N/record','N/runtime'],
+define(['N/record', 'N/runtime'],
     /**
  * @param{record} record
  */
@@ -32,17 +32,19 @@ define(['N/record','N/runtime'],
          * @since 2015.2
          */
         const beforeSubmit = (scriptContext) => {
-            if (scriptContext.type !== scriptContext.UserEventType.CREATE &&
-                scriptContext.type !== scriptContext.UserEventType.EDIT) {
+            if (scriptContext.type !== scriptContext.UserEventType.CREATE) {
                 return;
             }
             try {
                 const scriptObj = runtime.getCurrentScript();
-                const REJECTED = scriptObj.getParameter({name:'custscript_ft_sp_rejected'});
+                const REJECTED = scriptObj.getParameter({ name: 'custscript_ft_sp_rejected' });
                 const newRecord = scriptContext.newRecord;
+                /**** FUTURE REFERENCE: Commenting this line out because "isAnyReclassJE" returning empty when running the reclassifications batch job ***/
+                /* 
                 const isAnyReclassJE = newRecord.getValue({ fieldId: 'isanyreclassje' });
-                log.audit('isAnyReclassJE', isAnyReclassJE);
-                if (isAnyReclassJE !== 'T') return;
+                 log.audit('isAnyReclassJE', isAnyReclassJE);
+                 if (isAnyReclassJE !== 'T') return;
+                 **/
                 const lineCount = newRecord.getLineCount({ sublistId: 'line' });
                 if (lineCount === 0) return;
                 const firstLineMemo = newRecord.getSublistValue({
