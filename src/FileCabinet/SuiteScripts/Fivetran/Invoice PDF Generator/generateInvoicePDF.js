@@ -14,9 +14,9 @@ define([
 
     // Constants
     const SCRIPT_PARAMS = {
-        SEARCH_ID: 'custscript_inv_pdf_search',
-        TEMPLATE_ID: 'custscript_inv_pdf_templ_id',
-        FOLDER_ID: 'custscript_output_folder_id'
+        SEARCH_ID: 'custscript_ft_sp_inv_pdf_gen_ss',
+        TEMPLATE_ID: 'custscript_ft_sp_inv_pdf_tmpl_id',
+        FOLDER_ID: 'custscript_ft_sp_staged'
     };
 
     function getInputData(context) {
