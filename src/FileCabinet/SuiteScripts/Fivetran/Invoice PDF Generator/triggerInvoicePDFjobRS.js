@@ -73,7 +73,7 @@ define([
                     deploymentId: 'customdeploy_mr_inv_pdf_gen',
                 });
                 const taskId = mapReduceTask.submit();
-                let timeStamp = new Date().toISOString();
+                let timeStamp = new Date().toISOString().slice(0,-1);
                 log.audit('Invoice PDF Generation Script Triggered', `Task ID: ${taskId}`);
                 return {
                     success: true,
@@ -98,19 +98,21 @@ define([
                 const scriptObj = runtime.getCurrentScript();
                 const STAGED = scriptObj.getParameter({ name: 'custscript_ft_sp_dec_staged' });
 
+                log.audit('requestBody',requestBody);
+
                 if (!taskId) {
                     return { status: 'ERROR', message: 'Missing taskId', files: [] };
                 }
 
-                log.debug('taskId', taskId);
+                log.audit('taskId', taskId);
                 // status check
                 var taskStatusObj = task.checkStatus({ taskId: taskId });
-                log.debug('Task Status', taskStatusObj.status);
+                log.audit('Task Status', taskStatusObj.status);
 
                 // VK Comments: If job is complete, retrieve invoice PDF files
                 if (taskStatusObj.status === 'COMPLETE') {
                     var sql = `SELECT id, name, url FROM file WHERE folder = ${STAGED} AND filetype = 'PDF'`;
-                    log.debug('sql', sql);
+                    log.audit('sql', sql);
                     var files = suiteQlUtils.runQuery({ sql: sql, pageSize: 5000, queryName: 'Invoice PDF Files' });
                     var domain = url.resolveDomain({ hostType: url.HostType.APPLICATION, accountId: runtime.accountId });
                     files = files.map(function (file) {
