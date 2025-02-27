@@ -38,7 +38,9 @@ define(['N/record', 'N/runtime'],
             try {
                 const scriptObj = runtime.getCurrentScript();
                 const REJECTED = scriptObj.getParameter({ name: 'custscript_ft_sp_rejected' });
+                const REJECTION_MSG = scriptObj.getParameter({ name: 'custscript_ft_reject_memo' });
                 const newRecord = scriptContext.newRecord;
+                
                 /**** FUTURE REFERENCE: Commenting this line out because "isAnyReclassJE" returning empty when running the reclassifications batch job ***/
                 /* 
                 const isAnyReclassJE = newRecord.getValue({ fieldId: 'isanyreclassje' });
@@ -53,8 +55,9 @@ define(['N/record', 'N/runtime'],
                     line: 0
                 });
                 if (firstLineMemo && firstLineMemo.includes('Net Contract Asset or Liability per Element')) {
-                    log.audit('NCAL JE', 'NCAL JE')
+                    log.audit('NCAL JE', 'NCAL JE');
                     newRecord.setValue({ fieldId: 'approvalstatus', value: REJECTED });
+                    newRecord.setValue({ fieldId: 'memo', value: REJECTION_MSG });
                 }
 
             }
