@@ -73,7 +73,7 @@ define([
                     deploymentId: 'customdeploy_mr_inv_pdf_gen',
                 });
                 const taskId = mapReduceTask.submit();
-                let timeStamp = new Date().toISOString().slice(0,-1);
+                let timeStamp = new Date().toISOString().slice(0, -1);
                 log.audit('Invoice PDF Generation Script Triggered', `Task ID: ${taskId}`);
                 return {
                     success: true,
@@ -94,42 +94,65 @@ define([
         const writeInvoicePdfUrlsPost = (requestBody) => {
             try {
                 const taskId = requestBody.taskId;
-
                 const scriptObj = runtime.getCurrentScript();
                 const STAGED = scriptObj.getParameter({ name: 'custscript_ft_sp_dec_staged' });
-
-                log.audit('requestBody',requestBody);
-
                 if (!taskId) {
-                    return { status: 'ERROR', message: 'Missing taskId', files: [] };
+                    return { success: false, message: 'Missing taskId', files: [] };
                 }
-
-                log.audit('taskId', taskId);
-                // status check
-                var taskStatusObj = task.checkStatus({ taskId: taskId });
+                const taskStatusObj = task.checkStatus({ taskId });
                 log.audit('Task Status', taskStatusObj.status);
-
-                // VK Comments: If job is complete, retrieve invoice PDF files
                 if (taskStatusObj.status === 'COMPLETE') {
-                    var sql = `SELECT id, name, url FROM file WHERE folder = ${STAGED} AND filetype = 'PDF'`;
-                    log.audit('sql', sql);
-                    var files = suiteQlUtils.runQuery({ sql: sql, pageSize: 5000, queryName: 'Invoice PDF Files' });
-                    var domain = url.resolveDomain({ hostType: url.HostType.APPLICATION, accountId: runtime.accountId });
-                    files = files.map(function (file) {
-                        file.fullUrl = 'https://' + domain + file.url;
-                        return file;
-                    });
 
-                    return { success: true, status: 'COMPLETE', files: files };
+                    const sql = `SELECT id, name, url FROM file WHERE folder = ${STAGED} AND filetype = 'PDF'`;
+                    const files = suiteQlUtils.runQuery({ sql, pageSize: 5000, queryName: 'Invoice PDF Files' });
+                    const domain = url.resolveDomain({ hostType: url.HostType.APPLICATION, accountId: runtime.accountId });
+
+
+                    const invoiceNumbers = files.map(file => {
+                        const match = file.name.match(/(INV\d+)/i);
+                        return match ? match[1] : null;
+                    }).filter(Boolean);
+                    log.debug('Invoice Numbers', invoiceNumbers);
+                    let invoiceAccountMap = {};
+
+
+                    if (invoiceNumbers.length > 0) {
+                        const quotedDocNums = invoiceNumbers.map(num => `'${num}'`).join(', ');
+                        const accountQuery = `
+                                        SELECT tran.tranid AS document_number, cust.custentity_ft_account_id_sf AS account_id
+                                        FROM transaction tran
+                                        JOIN customer cust ON tran.entity = cust.id
+                                        WHERE tran.type = 'CustInvc'
+                                        AND tran.tranid IN (${quotedDocNums})
+                                    `;
+                        const results = suiteQlUtils.runQuery({
+                            sql: accountQuery,
+                            pageSize: 1000,
+                            queryName: 'Invoice Account Mapping'
+                        });
+                        results.forEach(row => {
+                            invoiceAccountMap[row.document_number] = row.account_id;
+                        });
+                    }
+
+                    const enrichedFiles = files.map(file => {
+                        const match = file.name.match(/(INV\d+)/i);
+                        const docNumber = match ? match[1] : null;
+                        return {
+                            ...file,
+                            fullUrl: `https://${domain}${file.url}`,
+                            billingAccountId: docNumber ? invoiceAccountMap[docNumber] || null : null
+                        };
+                    });
+                    return { success: true, status: 'COMPLETE', files: enrichedFiles };
                 } else {
-                    //VK Comments: If the job is still in progress, return the current status with an empty file array
                     return { success: true, status: taskStatusObj.status, files: [] };
                 }
             } catch (e) {
                 log.error('Error in POST handler', e);
                 return { success: false, status: 'ERROR', message: e.message, files: [] };
             }
-        }
+        };
 
         return {
             get: generateInvoicePDfsGet,
