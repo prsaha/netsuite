@@ -1,0 +1,302 @@
+{
+    "customer": [
+        {
+            "id": "salesrep",
+            "type": "select"
+        },
+        {
+            "id": "custentityaccount_owner",
+            "type": "email"
+        },
+        {
+            "id": "custentitycustentity_csm",
+            "type": "email"
+        },
+        {
+            "id": "email",
+            "type": "email"
+        }
+    ],
+    "vendor": [
+        {
+            "id": "comments",
+            "type": "text area"
+        },
+        {
+            "id": "email",
+            "type": "email"
+        },
+        {
+            "id": "phone",
+            "type": "phone number"
+        },
+        {
+            "id": "altphone",
+            "type": "phone number"
+        },
+        {
+            "id": "fax",
+            "type": "text"
+        }
+    ],
+    "contact": [
+        {
+            "id": "entityid",
+            "type": "text"
+        },
+        {
+            "id": "salutation",
+            "type": "text"
+        },
+        {
+            "id": "firstname",
+            "type": "text"
+        },
+        {
+            "id": "lastname",
+            "type": "text"
+        },
+        {
+            "id": "middlename",
+            "type": "text"
+        },
+        {
+            "id": "title",
+            "type": "text"
+        },
+        {
+            "id": "comments",
+            "type": "text area"
+        },
+        {
+            "id": "email",
+            "type": "email"
+        },
+        {
+            "id": "altemail",
+            "type": "email"
+        },
+        {
+            "id": "mobilephone",
+            "type": "phone number"
+        },
+        {
+            "id": "homephone",
+            "type": "phone number"
+        },
+        {
+            "id": "fax",
+            "type": "text"
+        },
+        {
+            "id": "supervisor",
+            "type": "select"
+        },
+        {
+            "id": "supervisorphone",
+            "type": "phone number"
+        },
+        {
+            "id": "assistant",
+            "type": "select"
+        },
+        {
+            "id": "assistantphone",
+            "type": "phone number"
+        }
+    ],
+    "employee": [
+        {
+            "id": "entityid",
+            "type": "text"
+        },
+        {
+            "id": "salutation",
+            "type": "text"
+        },
+        {
+            "id": "firstname",
+            "type": "text"
+        },
+        {
+            "id": "lastname",
+            "type": "text"
+        },
+        {
+            "id": "middlename",
+            "type": "text"
+        },
+        {
+            "id": "initials",
+            "type": "text"
+        },
+        {
+            "id": "title",
+            "type": "text"
+        },
+        {
+            "id": "supervisor",
+            "type": "select"
+        },
+        {
+            "id": "comments",
+            "type": "text area"
+        },
+        {
+            "id": "image",
+            "type": "select"
+        },
+        {
+            "id": "email",
+            "type": "email"
+        },
+        {
+            "id": "phone",
+            "type": "phone"
+        },
+        {
+            "id": "officephone",
+            "type": "phone"
+        },
+        {
+            "id": "mobilephone",
+            "type": "phone"
+        },
+        {
+            "id": "homephone",
+            "type": "phone"
+        },
+        {
+            "id": "fax",
+            "type": "text"
+        },
+        {
+            "id": "socialsecuritynumber",
+            "type": "text"
+        },
+        {
+            "id": "birthdate",
+            "type": "date"
+        },
+        {
+            "id": "employeetype",
+            "type": "select"
+        },
+        {
+            "id": "jobdescription",
+            "type": "textarea"
+        },
+        {
+            "id": "hiredate",
+            "type": "date"
+        },
+        {
+            "id": "lastreviewdate",
+            "type": "date"
+        },
+        {
+            "id": "nextreviewdate",
+            "type": "date"
+        },
+        {
+            "id": "releasedate",
+            "type": "date"
+        },
+        {
+            "id": "expenselimit",
+            "type": "decimal"
+        },
+        {
+            "id": "approver",
+            "type": "select"
+        },
+        {
+            "id": "approvallimit",
+            "type": "decimal"
+        },
+        {
+            "id": "Purchase Limit",
+            "type": "decimal"
+        },
+        {
+            "id": "custentity3",
+            "type": "text"
+        },
+        {
+            "id": "purchaseorderapprover",
+            "type": "select"
+        },
+        {
+            "id": "purchaseorderapprovallimit",
+            "type": "decimal"
+        },
+        {
+            "id": "accountnumber",
+            "type": "text"
+        },
+        {
+            "id": "defaultacctcorpcardexp",
+            "type": "select"
+        },
+        {
+            "id": "custentity4",
+            "type": "text"
+        },
+        {
+            "id": "residentstatus",
+            "type": "select"
+        },
+        {
+            "id": "visatype",
+            "type": "select"
+        },
+        {
+            "id": "visaexpdate",
+            "type": "date"
+        },
+        {
+            "id": "aliennumber",
+            "type": "text"
+        },
+        {
+            "id": "authworkdate",
+            "type": "date"
+        },
+        {
+            "id": "maritalstatus",
+            "type": "select"
+        },
+        {
+            "id": "ethnicity",
+            "type": "select"
+        },
+        {
+            "id": "gender",
+            "type": "select"
+        },
+        {
+            "id": "custentity_arr_revrec_approver",
+            "type": "select"
+        },
+        {
+            "id": "custentity_arr_revrec_app_limit",
+            "type": "decimal"
+        },
+        {
+            "id": "custentity_arr_revrec_limit",
+            "type": "decimal"
+        },
+        {
+            "id": "timeapprover",
+            "type": "select"
+        },
+        {
+            "id": "custentitynamely_cost_center",
+            "type": "text"
+        },
+        {
+            "id": "custentity_jpmc_ven_pm",
+            "type": "select"
+        }
+    ]
+}
